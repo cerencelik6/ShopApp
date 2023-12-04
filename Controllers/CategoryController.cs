@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
-using ShopApp.Data;
+using ShopApp.DataAccess.Data;
 using ShopApp.Models;
 
 namespace ShopApp.Controllers

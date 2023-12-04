@@ -1,6 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using ShopApp.Data;
-
+using ShopApp.DataAccess.Data;
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
