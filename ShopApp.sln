@@ -5,7 +5,7 @@ VisualStudioVersion = 17.9.34310.174
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp", "ShopApp.csproj", "{10C6FAE6-CAC9-491A-B278-DEDC8ABCA268}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ShopApp_Razor", "..\ShopApp_Razor\ShopApp_Razor.csproj", "{530E9FE7-D54F-43AC-846F-6A926EB108AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ShopApp_Razor", "..\ShopApp_Razor\ShopApp_Razor.csproj", "{530E9FE7-D54F-43AC-846F-6A926EB108AC}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
