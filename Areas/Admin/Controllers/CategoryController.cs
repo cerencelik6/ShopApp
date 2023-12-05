@@ -1,21 +1,23 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 using ShopApp.DataAccess.Data;
-using ShopApp.DataAccess.Repository;
+using ShopApp.DataAccess.Repository.IRepository;
 using ShopApp.Models;
 
-namespace ShopApp.Controllers
+namespace ShopApp.Areas.Admin.Controllers
 {
+    [Area("Admin")]
     public class CategoryController : Controller
     {
-        private readonly ICategoryRepository _categoryRepo;
-        public CategoryController(ICategoryRepository db) 
+        
+        private readonly IUnitOfWork _unitOfWork;
+        public CategoryController(IUnitOfWork unitOfWork)
         {
-            _categoryRepo = db;
+            _unitOfWork = unitOfWork;
         }
         public IActionResult Index()
         {
-            List<Category> objCategoryList = _categoryRepo.GetAll().ToList();
+            List<Category> objCategoryList = _unitOfWork.Category.GetAll().ToList();
             return View(objCategoryList);
         }
         public IActionResult Create()
@@ -30,23 +32,24 @@ namespace ShopApp.Controllers
                 ModelState.AddModelError("name", "The DisplayOrder Cannot exactly match the Name.");
             }
 
-            if (ModelState.IsValid) 
+            if (ModelState.IsValid)
             {
-            _categoryRepo.Add(obj);
-            _categoryRepo.Save();
-            TempData["success"] = "Category created successfully";
-            return RedirectToAction("Index");
+                _unitOfWork.Category.Add(obj);
+                _unitOfWork.Save();
+
+                TempData["success"] = "Category created successfully";
+                return RedirectToAction("Index");
             }
             return View();
         }
         public IActionResult Edit(int? id)
         {
-            if(id == null || id == 0)
+            if (id == null || id == 0)
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _categoryRepo.Get(u=>u.Id==id);
-            
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
+
             if (categoryFromDb == null)
             {
                 return NotFound();
@@ -56,11 +59,11 @@ namespace ShopApp.Controllers
         [HttpPost]
         public IActionResult Edit(Category obj)
         {
-            
+
             if (ModelState.IsValid)
             {
-                _categoryRepo.Update(obj);
-                _categoryRepo.Save();
+                _unitOfWork.Category.Update(obj);
+                _unitOfWork.Save();
                 TempData["success"] = "Category updated successfully";
                 return RedirectToAction("Index");
             }
@@ -73,7 +76,7 @@ namespace ShopApp.Controllers
             {
                 return NotFound();
             }
-            Category? categoryFromDb = _categoryRepo.Get(u => u.Id == id);
+            Category? categoryFromDb = _unitOfWork.Category.Get(u => u.Id == id);
 
             if (categoryFromDb == null)
             {
@@ -81,19 +84,19 @@ namespace ShopApp.Controllers
             }
             return View(categoryFromDb);
         }
-        [HttpPost , ActionName("Delete")]
+        [HttpPost, ActionName("Delete")]
         public IActionResult DeletePOST(int? id)
         {
-            Category? obj = _categoryRepo.Get(u => u.Id == id);
+            Category? obj = _unitOfWork.Category.Get(u => u.Id == id);
             if (obj == null)
             {
                 return NotFound();
             }
-            _categoryRepo.Remove(obj);
-            _categoryRepo.Save();
+            _unitOfWork.Category.Remove(obj);
+
             TempData["success"] = "Category deleted successfully";
             return RedirectToAction("Index");
-           
+
         }
     }
 }
