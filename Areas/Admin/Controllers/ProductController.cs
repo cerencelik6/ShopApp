@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using ShopApp.DataAccess.Data;
 using ShopApp.DataAccess.Repository.IRepository;
 using ShopApp.Models;
+using System.Collections.Generic;
 
 namespace ShopApp.Areas.Admin.Controllers
 {
@@ -18,10 +20,18 @@ namespace ShopApp.Areas.Admin.Controllers
         public IActionResult Index()
         {
             List<Product> objProductList = _unitOfWork.Product.GetAll().ToList();
+            
             return View(objProductList);
         }
         public IActionResult Create()
         {
+            IEnumerable<SelectListItem> CategoryList = _unitOfWork.Category.GetAll().Select(u => new SelectListItem
+            {
+                Text = u.Name,
+                Value = u.Id.ToString()
+            });
+            //ViewBag.CategoryList = CategoryList;
+            ViewData["CategoryList"]= CategoryList;
             return View();
         }
         [HttpPost]
